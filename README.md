@@ -180,8 +180,6 @@ The AI supports the investigator rather than replacing human investigation.
 
 ## 🧰 Technology Stack
 
-## 🧰 Technology Stack
-
 ### ⚙️ Backend
 **Python • FastAPI • Celery • Redis**
 
@@ -205,11 +203,6 @@ The AI supports the investigator rather than replacing human investigation.
 ## 📁 Project Structure
 
 
-### One small recommendation
-
-You **shouldn't show `node_modules/` and `dist/`** in the README because they are generated folders and make the structure look unnecessarily large.
-
-So the cleaner version I'd recommend is:
 
 ```markdown
 ## 📁 Project Structure
@@ -265,13 +258,6 @@ npm install
 npm run dev
 ```
 
-### 4. Environment Variables
-
-Create a `.env` file using `.env.example` and add the required API configuration.
-
-**Never commit API keys or secrets to GitHub.**
-
----
 
 ## 🔬 Example Investigation
 
@@ -321,8 +307,6 @@ This helps investigators move from simply detecting a suspicious email to unders
 - Automated incident-report generation
 
 ---
-
-## 📚 References
 
 ## 📚 References & Data Sources
 
