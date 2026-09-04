@@ -1,95 +1,350 @@
-# Email Threat Detection & Investigation Platform
+# 🛡️ AI-Powered Email Threat Detection & Forensic Intelligence Platform
 
-A complete end-to-end cybersecurity system designed for automated `.eml` email threat parsing, security indicator extraction, external intelligence enrichment, look-alike domain detection, risk scoring, machine learning classification, and SOC analyst investigation reporting.
+### Detect • Investigate • Correlate • Explain
 
----
-
-## Key Features
-
-1. **End-to-End Pipeline**:
-   $$\text{Raw Evidence} \longrightarrow \text{Enrichment} \longrightarrow \text{Derived Features} \longrightarrow \text{Risk Assessment}$$
-2. **Comprehensive `.eml` Parsing**:
-   - Headers: `From`, `To`, `Cc`, `Reply-To`, `Subject`, `Date`, `Received`, `Authentication-Results`, `Received-SPF`, `DKIM-Signature`.
-   - Extract URLs from plain text & HTML body.
-   - Attachment metadata & SHA-256 calculation (No execution!).
-3. **Multi-Vector Analysis**:
-   - **Sender & Reply-To**: Mismatch detection (`reply_to_mismatch`).
-   - **Authentication**: SPF evaluation, DKIM cryptographic/selector verification, DMARC policy & alignment checks (`PASS`/`FAIL`/`UNKNOWN`). Explicit distinction between `observed` and `independently_verified` sources.
-   - **Infrastructure**: Received hop chain route, IP geolocation, ASN, Proxy/VPN/Tor exit node/Hosting datacenter flags.
-   - **Look-alike Algorithm**: Custom Levenshtein distance, homoglyph character substitutions (`0` $\to$ `o`, `1` $\to$ `l`), and brand target matching.
-   - **Content Analysis**: Urgency cues, credential harvesting, financial/wire requests, executive impersonation.
-   - **Attachment Threat**: Macro documents (`.docm`), executables (`.exe`, `.ps1`), double extensions (`.pdf.exe`).
-4. **Explainable Risk Engine & ML**:
-   - Weighted risk score ($0\text{--}100$) mapped to `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`.
-   - `scikit-learn` Random Forest ML model providing probability metrics and feature importance.
-   - Ranked list of human-understandable evidence-backed reasons.
-5. **SOC Analyst Investigation Dashboard**:
-   - Built with React & Vite in a dark glassmorphic cybersecurity aesthetic.
-   - Interactive file dropzone + 1-click sample email test buttons.
-   - Visual risk score gauge, hop route timeline, URL inspection table, feature matrix, and Markdown SOC report generator.
-6. **SQLite Storage & Mock Mode**:
-   - Persistent analysis storage in SQLite (`email_threats.db`).
-   - `USE_MOCK_INTELLIGENCE=true` default mode for offline hackathon testing with clearly marked demo tags.
+An AI-assisted cybersecurity platform that analyzes suspicious emails, extracts technical evidence, enriches indicators with threat intelligence, correlates relationships, and generates an explainable forensic assessment.
 
 ---
 
-## Quick Start Guide
+## 📌 Overview
 
-### 1. Install Backend Dependencies & Run Server
-```bash
-pip install -r requirements.txt
-python -m uvicorn backend.main:app --port 8000 --reload
+Traditional email security tools can detect suspicious messages, but investigation often requires collecting and connecting evidence from multiple sources.
+
+Our platform brings this investigation workflow into a single interface:
+
+**Email → Extract → Analyze → Enrich → Correlate → AI → Report**
+
+---
+
+## ❗ Problem
+
+Investigating a suspicious email can require manual analysis of:
+
+- Email headers and authentication
+- URLs and domains
+- Sending IP and infrastructure
+- Attachments
+- Threat-intelligence results
+- Social-engineering indicators
+
+This can make investigations slower and harder to understand.
+
+---
+
+## 💡 Solution
+
+The platform automatically extracts and analyzes important indicators from a suspicious email, enriches them using external intelligence, connects the evidence, and presents the findings through an investigator-friendly dashboard.
+
+> **Evidence → Intelligence → Explanation**
+
+---
+
+## ✨ Key Features
+
+- 📧 **Email & Header Analysis**
+- 🔐 **SPF / DKIM / DMARC Analysis**
+- 🌐 **URL & Domain Threat Analysis**
+- 🌍 **IP & Infrastructure Intelligence**
+- 📎 **Attachment / Hash Analysis**
+- 🔗 **Evidence Correlation**
+- 🤖 **AI-Assisted Risk Explanation**
+- 📊 **Investigation Dashboard**
+- 📄 **Forensic Report Generation**
+
+---
+
+## 🔄 How It Works
+
+```text
+Suspicious Email
+       ↓
+Email Ingestion
+       ↓
+Evidence Extraction
+       ↓
+Header / URL / Attachment Analysis
+       ↓
+Threat Intelligence Enrichment
+       ↓
+Evidence Correlation
+       ↓
+AI-Assisted Analysis
+       ↓
+Risk Assessment
+       ↓
+Forensic Report
 ```
 
-Backend endpoints:
-- `http://localhost:8000/api/health`
-- `http://localhost:8000/docs` (Interactive Swagger OpenAPI Documentation)
+---
 
-### 2. Install Frontend Dependencies & Run React UI
+## 🏗️ System Architecture
+
+```text
+                    ┌──────────────────────┐
+                    │    Suspicious Email  │
+                    │       (.eml)         │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │   Email Ingestion    │
+                    │   & MIME Parsing     │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                 ┌─────────────────────────────┐
+                 │     Evidence Extraction    │
+                 └─────────────┬───────────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          ▼                    ▼                    ▼
+ ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+ │ Header Analysis │  │ URL & Domain    │  │  Attachment     │
+ │ SPF/DKIM/DMARC  │  │ Analysis        │  │  Analysis       │
+ └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
+          │                    │                    │
+          └────────────────────┼────────────────────┘
+                               ▼
+                    ┌──────────────────────┐
+                    │ Threat Intelligence  │
+                    │ IP / URL / Domain     │
+                    │ Reputation & Enrich.  │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │ Evidence Correlation │
+                    │ Email → URL → IP →   │
+                    │ ASN / Infrastructure │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │ AI-Assisted Analysis │
+                    │ & Risk Assessment    │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+              ┌─────────────────────────────────┐
+              │       Investigation Dashboard  │
+              │       + Forensic Report         │
+              └─────────────────────────────────┘
+```
+
+### Architecture Flow
+
+**Input → Extraction → Analysis → Enrichment → Correlation → AI → Report**
+
+
+## 🔍 Investigation Evidence
+
+The platform connects related indicators instead of showing them as isolated results.
+
+```text
+Email
+  ↓
+Sender Domain
+  ↓
+Embedded URL
+  ↓
+Resolved IP
+  ↓
+ASN / Infrastructure
+  ↓
+Approximate Location
+  ↓
+Threat Intelligence
+
+
+
+## 🤖 AI-Assisted Analysis
+
+The AI layer uses the collected investigation evidence to provide an explainable assessment.
+
+Example:
+
+```text
+Risk Level: HIGH
+
+Reasons:
+• Suspicious sender/domain relationship
+• Suspicious URL characteristics
+• Authentication anomaly
+• Threat-intelligence indicators
+• Social-engineering signals
+```
+
+The AI supports the investigator rather than replacing human investigation.
+
+---
+
+## 🧰 Technology Stack
+
+## 🧰 Technology Stack
+
+### ⚙️ Backend
+**Python • FastAPI • Celery • Redis**
+
+### 🔎 Forensics
+**dkimpy • dnspython • Authentication Results**
+
+### 🤖 Machine Learning
+**ONNX Runtime • DistilBERT**
+
+### 🗄️ Data & Correlation
+**PostgreSQL • NetworkX**
+
+### 🎨 Frontend
+**React • Tailwind CSS • Leaflet • Cytoscape**
+
+### 🐳 Deployment
+**Docker Compose**
+
+---
+
+## 📁 Project Structure
+
+
+### One small recommendation
+
+You **shouldn't show `node_modules/` and `dist/`** in the README because they are generated folders and make the structure look unnecessarily large.
+
+So the cleaner version I'd recommend is:
+
+```markdown
+## 📁 Project Structure
+
+```text
+project/
+├── backend/
+│   ├── services/
+│   ├── config.py
+│   ├── database.py
+│   └── main.py
+│
+├── frontend/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── samples/
+│   ├── legitimate.eml
+│   ├── phishing.eml
+│   ├── spoofed_sender.eml
+│   ├── suspicious_attachment.eml
+│   └── suspicious_url.eml
+│
+├── tests/
+├── .env.example
+├── .gitignore
+├── email_threats.db
+├── requirements.txt
+└── README.md
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone <YOUR-GITHUB-REPOSITORY-URL>
+cd <PROJECT-NAME>
+
+### 2. Backend
+
+```cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### 3. Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Frontend App:
-- Open `http://localhost:3000` in your browser.
+### 4. Environment Variables
+
+Create a `.env` file using `.env.example` and add the required API configuration.
+
+**Never commit API keys or secrets to GitHub.**
 
 ---
 
-## Quick Sample Testing
+## 🔬 Example Investigation
 
-The platform includes 5 synthetic `.eml` sample test emails in `samples/`:
+A suspicious email is uploaded.
 
-1. **Phishing & PayPal Lookalike** (`samples/phishing.eml`):
-   - Demonstrates look-alike domain `paypa1-security.com` (0.95 similarity), Reply-To mismatch, DMARC failure, Tor exit node IP, credential harvesting URL, `.docm` attachment. (Result: **CRITICAL - 91/100**).
-2. **Executive CEO Spoofing** (`samples/spoofed_sender.eml`):
-   - Demonstrates CEO wire transfer request, external Reply-To mismatch, SPF fail. (Result: **CRITICAL**).
-3. **Suspicious IP & Shortened URL** (`samples/suspicious_url.eml`):
-   - Demonstrates raw IP server link (`http://45.142.214.88/`), shorteners (`bit.ly`), urgency text. (Result: **HIGH**).
-4. **Executable Attachment** (`samples/suspicious_attachment.eml`):
-   - Demonstrates double extension `.Invoice.pdf.exe` attachment and overdue payment threats. (Result: **CRITICAL**).
-5. **Legitimate Newsletter** (`samples/legitimate.eml`):
-   - Corporate email passing SPF, DKIM, and DMARC with matching domains and clean links. (Result: **LOW**).
+The platform:
 
----
-
-## Running Unit Tests
-
-Run full Pytest suite:
-```bash
-python -m pytest
-```
+1. Extracts headers and indicators
+2. Checks SPF, DKIM and DMARC
+3. Extracts URLs and domains
+4. Enriches IP/domain information
+5. Correlates the evidence
+6. Generates an explainable risk assessment
+7. Produces a forensic report
 
 ---
 
-## REST API Specification
+## 🎯 Innovation
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/analyze` | Upload `.eml` file via multipart/form-data for threat analysis |
-| `GET` | `/api/analysis/{id}` | Retrieve stored JSON analysis result by Analysis ID |
-| `GET` | `/api/analysis/{id}/report` | Retrieve Markdown SOC Investigation Report |
-| `GET` | `/api/samples/{name}` | Quick-run synthetic sample email (`phishing`, `legitimate`, `spoofed_sender`, etc.) |
-| `GET` | `/api/history` | List recent analysis records |
-| `GET` | `/api/health` | Service health status & mock mode toggle state |
+The core focus is not creating another standalone phishing classifier.
+
+The platform focuses on **automating the investigation workflow** by connecting:
+
+**Extraction + Threat Intelligence + Correlation + AI Explanation + Reporting**
+
+This helps investigators move from simply detecting a suspicious email to understanding the evidence behind it.
+
+---
+
+## ⚠️ Limitations
+
+- Threat intelligence depends on available external data.
+- A zero-detection reputation result does not guarantee safety.
+- IP geolocation represents approximate infrastructure location.
+- Newly created domains may have limited historical intelligence.
+- AI assessment should be treated as decision support.
+
+---
+
+## 🔮 Future Scope
+
+- Cross-email campaign correlation
+- Advanced phishing-language analysis
+- Historical investigation database
+- SIEM / SOC integration
+- Improved IOC correlation
+- Automated incident-report generation
+
+---
+
+## 📚 References
+
+## 📚 References & Data Sources
+
+- [APWG — Phishing Activity Trends Reports](https://apwg.org/trendreports)
+- [PhishTank — Phishing URL Database & API](https://www.phishtank.org/)
+- [AbuseIPDB — IP Reputation Database & API](https://www.abuseipdb.com/)
+- [VirusTotal — Threat Intelligence & API Documentation](https://docs.virustotal.com/docs/api-overview)
+- [Enron Email Dataset — CMU](https://www.cs.cmu.edu/~enron/)
+- [Nazario Phishing Corpus](https://monkey.org/~jose/phishing/)
+- [RFC 5322 — Internet Message Format](https://www.rfc-editor.org/rfc/rfc5322.html)
+- [RFC 7208 — Sender Policy Framework (SPF)](https://www.rfc-editor.org/rfc/rfc7208.html)
+- [RFC 6376 — DomainKeys Identified Mail (DKIM)](https://www.rfc-editor.org/rfc/rfc6376.html)
+- [RFC 9989 — Domain-Based Message Authentication, Reporting & Conformance (DMARC)](https://www.rfc-editor.org/rfc/rfc9989.html)
+- [ICANN — Registration Data Access Protocol (RDAP)](https://www.icann.org/rdap/)
+- [Google — Email Sender Guidelines](https://support.google.com/mail/answer/81126)
+
+---
+
+---
+
+## 🛡️ From Detection to Investigation
+
+> **Detecting a suspicious email is only the beginning. Understanding the evidence behind it is the real investigation.**
+
+### Evidence → Intelligence → Correlation → Explanation → Forensic Report
