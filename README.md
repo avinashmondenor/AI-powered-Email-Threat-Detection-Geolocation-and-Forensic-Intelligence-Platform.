@@ -1,4 +1,4 @@
-# 🛡️ AI-Powered Email Threat Detection & Forensic Intelligence Platform
+🛡️ AI-Powered Email Threat Detection & Forensic Intelligence Platform
 
 ### Detect • Investigate • Correlate • Explain
 
